@@ -9,21 +9,23 @@ processors:
 
 exporters:
   otlphttp:
-    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+    endpoint: $OTEL_EXPORTER_OTLP_ENDPOINT
     headers:
-      api-key: ${NEW_RELIC_LICENSE_KEY}
+      api-key: $NEW_RELIC_LICENSE_KEY
+  debug:
+    verbosity: detailed
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp]
+      exporters: [otlphttp, debug]
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp]
+      exporters: [otlphttp, debug]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlphttp]
+      exporters: [otlphttp, debug]

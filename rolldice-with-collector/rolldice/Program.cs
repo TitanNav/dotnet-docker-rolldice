@@ -17,32 +17,16 @@ builder.Logging.AddOpenTelemetry(options =>
         .SetResourceBuilder(
             ResourceBuilder.CreateDefault()
                 .AddService(serviceName))
-        .AddOtlpExporter(options =>
-            {
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                //options.Endpoint = new Uri("https://otlp.nr-data.net/v1/logs");
-                options.Endpoint = new Uri("http://otel-collector:4318");
-
-            });
+        .AddOtlpExporter();
 });
 builder.Services.AddOpenTelemetry()
       .ConfigureResource(resource => resource.AddService(serviceName))
       .WithTracing(tracing => tracing
           .AddAspNetCoreInstrumentation()
-          .AddOtlpExporter(options =>
-            {
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                //options.Endpoint = new Uri("https://otlp.nr-data.net/v1/traces");
-                options.Endpoint = new Uri("http://otel-collector:4318");
-            }))
+          .AddOtlpExporter())
       .WithMetrics(metrics => metrics
           .AddAspNetCoreInstrumentation()
-          .AddOtlpExporter(options =>
-            {
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                //options.Endpoint = new Uri("https://otlp.nr-data.net/v1/metrics");
-                options.Endpoint = new Uri("http://otel-collector:4318");
-            }));
+          .AddOtlpExporter());
 
 var app = builder.Build();
 
